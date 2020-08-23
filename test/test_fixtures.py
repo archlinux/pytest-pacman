@@ -10,13 +10,13 @@ import pytest
 pytest_plugins = "pytest_pacman.plugin"
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def core_data():
     curpath = os.path.dirname(os.path.realpath(__file__))
     return json.load(open(f'{curpath}/core.json'))
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def localdb(tmpdir_factory, core_data, generate_localdb):
     dbpath = str(tmpdir_factory.mktemp('dbpath'))
     return generate_localdb(core_data, dbpath)

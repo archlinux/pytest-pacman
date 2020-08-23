@@ -72,7 +72,7 @@ def generate_syncdb(pkgs, dbfile):
     os.chdir(cwd)
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def generate_localdb(tmpdir_factory):
     '''Generates a localdb in provided location or when not provided pytest tmpdir
 
