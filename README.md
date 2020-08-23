@@ -15,6 +15,8 @@ The fixtures this plugin should provide:
 
 ## Usage
 
-Installing is as simple as e.g.::
+Installing is as simple as e.g.
 
-   pip install pytest-pacman
+```
+pip install pytest-pacman
+```
