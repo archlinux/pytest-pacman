@@ -1,0 +1,14 @@
+image: archlinux
+
+variables:
+  PYTHONPATH: "."
+
+before_script:
+  - pacman -Syu --noconfirm --noprogressbar --needed
+           python-pytest flake8
+
+
+test:
+  script:
+    - flake8 --max-line-length=120
+    - pytest .
