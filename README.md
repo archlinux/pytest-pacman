@@ -1,6 +1,7 @@
 # pytest-pacman - pacman db pytest fixture
 
-This is a pytest plugin which will generate a test pacman db.
+This is a pytest plugin which will generate a test pacman db. To be used in
+pyalpm, archweb and arch-signoff for testing.
 
 ## Fixtures
 
