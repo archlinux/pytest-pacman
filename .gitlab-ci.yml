@@ -5,10 +5,10 @@ variables:
 
 before_script:
   - pacman -Syu --noconfirm --noprogressbar --needed
-           python-pytest flake8
+           python-pytest python-pytest-cov flake8 make
 
 
 test:
   script:
-    - flake8 --max-line-length=120
-    - pytest .
+    - make lint
+    - make test
