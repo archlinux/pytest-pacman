@@ -91,7 +91,7 @@ def generate_localdb(tmpdir_factory):
         dbloc = f"{dbroot}/local"
         os.mkdir(dbloc)
 
-        for pkg in pkgs[:1]:
+        for pkg in pkgs:
             path = f"{dbloc}/{pkg['name']}-{pkg['version']}"
             os.makedirs(path)
 

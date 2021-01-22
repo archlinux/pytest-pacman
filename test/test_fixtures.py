@@ -32,6 +32,12 @@ def test_localdb(core_data, localdb):
     pkgpath = f"{localdb}/local/{pkg['name']}-{pkg['version']}"
     assert os.path.exists(localdb)
     assert os.path.exists(pkgpath)
+    assert os.path.exists(f"{pkgpath}/desc")
+
+    pkg = core_data[-1]
+    pkgpath = f"{localdb}/local/{pkg['name']}-{pkg['version']}"
+    assert os.path.exists(f"{pkgpath}/files")
+    assert os.path.exists(f"{pkgpath}/desc")
 
 
 def test_localdb_tmpdir(core_data, localdb_tmpdir):
