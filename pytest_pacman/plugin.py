@@ -1,10 +1,8 @@
 #!/usr/bin/python3
 
+import io
 import os
 import tarfile
-
-from shutil import rmtree
-from tempfile import mkdtemp
 
 import pytest
 
@@ -51,25 +49,36 @@ def generate_files(pkg):
     return files
 
 
-def generate_syncdb(pkgs, dbfile):
-    dbpath = mkdtemp(dir='/tmp')
+# TODO: generate files db
+@pytest.fixture(scope="session")
+def generate_syncdb(tmpdir_factory):
+    '''Generates a sync database in a provided location or when not provided pytest tmpdir
 
-    # TODO: refactor to not use chdir.
-    cwd = os.getcwd()
-    os.chdir(dbpath)
+    Parameters:
+    pkgs (list): a list of dicts containing
+    dbname (string): sync database name (standard 'test.db')
+    dbloc (string): location where sync database will be created (optional)
 
-    with tarfile.open(dbfile, "w") as tar:
+    Returns:
+    str: path to dbroot for when dbroot is not provided
+    '''
+
+    def _generate_syncdb(pkgs, dbname='test.db', dbloc=''):
+        if not dbloc:
+            dbloc = str(tmpdir_factory.mktemp('dbpath').join(dbname))
+        else:
+            dbloc = os.path.join(dbloc, dbname)
+
+        tar = tarfile.open(dbloc, "w")
         for pkg in pkgs:
-            path = f"{pkg['name']}-{pkg['version']}"
-            os.makedirs(path)
+            info = tarfile.TarInfo(f"{pkg['name']}-{pkg['version']}/desc")
+            data = generate_desc(pkg)
+            info.size = len(data)
+            tar.addfile(info, io.BytesIO(data.encode()))
 
-            with open(f'{path}/desc', 'w') as f:
-                f.write(generate_desc(pkg))
+        return dbloc
 
-            tar.add(path)
-
-    rmtree(dbpath)
-    os.chdir(cwd)
+    return _generate_syncdb
 
 
 @pytest.fixture(scope="session")
