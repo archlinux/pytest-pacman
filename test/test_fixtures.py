@@ -39,6 +39,17 @@ def syncdb_tmpdir(tmpdir_factory, core_data, generate_syncdb):
     return generate_syncdb(core_data, 'foo.db', dbpath)
 
 
+@pytest.fixture(scope="session")
+def pkg_data():
+    curpath = os.path.dirname(os.path.realpath(__file__))
+    return json.load(open(f'{curpath}/package.json'))
+
+
+@pytest.fixture
+def package(pkg_data, generate_package):
+    return generate_package(pkg_data)
+
+
 def test_localdb(core_data, localdb):
     pkg = core_data[0]
     pkgpath = f"{localdb}/local/{pkg['name']}-{pkg['version']}"
@@ -75,3 +86,9 @@ def test_syncdb_tmpdir(core_data, syncdb_tmpdir):
             pkgpath = f"{pkg['name']}-{pkg['version']}"
 
             assert tarinfo.name == f"{pkgpath}/desc"
+
+
+def test_package(pkg_data, package):
+    with tarfile.open(package) as tar:
+        for index, tarinfo in enumerate(tar):
+            assert tarinfo.name == '.PKGINFO'

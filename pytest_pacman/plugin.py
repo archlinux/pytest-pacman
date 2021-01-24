@@ -7,6 +7,19 @@ import tarfile
 import pytest
 
 
+def generate_pkginfo(data):
+    pkginfo = ''
+
+    for key, value in data.items():
+        if not isinstance(value, list):
+            value = [value]
+
+        for val in value:
+            pkginfo += f'{key} = {val}\n'
+
+    return pkginfo
+
+
 def generate_desc(pkg):
     '''
     '''
@@ -114,3 +127,33 @@ def generate_localdb(tmpdir_factory):
         return dbroot
 
     return _generate_localdb
+
+
+@pytest.fixture(scope="session")
+def generate_package(tmpdir_factory):
+    '''Generates a package in provided location or when not provided pytest tmpdir
+
+    Parameters:
+    data (object): a dict containing the fields for PKGINFO
+    pkgname (string): the package file name ($pkgname-$pkgver-$pkgrel.pkg.tar)
+    pkgpath (string): the path to save the pkg file
+
+    Returns:
+    str: path to package
+    '''
+
+    def _generate_package(data, pkgname='test.pkg.tar', pkgpath=''):
+        if not pkgpath:
+            pkgpath = str(tmpdir_factory.mktemp('pkgpath').join(pkgname))
+        else:
+            pkgpath = os.path.join(pkgpath, pkgname)
+
+        tar = tarfile.open(pkgpath, 'w')
+        info = tarfile.TarInfo('.PKGINFO')
+        data = generate_pkginfo(data)
+        info.size = len(data)
+        tar.addfile(info, io.BytesIO(data.encode()))
+
+        return pkgpath
+
+    return _generate_package

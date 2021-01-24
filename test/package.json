@@ -1,0 +1,15 @@
+{
+    "pkgname": "filesystem",
+    "pkgbase": "filesystem",
+    "pkgver": "1-1",
+    "pkgdesc": "filesystem",
+    "url": "https://archlinux.org",
+    "builddate": 1599085821,
+    "packager": "Test <test@archlinux.org>",
+    "arch": "x86_64",
+    "license": "GPL",
+    "depend": [
+        "iana-etc",
+        "vi"
+    ]
+}
