@@ -6,6 +6,8 @@ import tarfile
 
 import pytest
 
+ALPM_DB_VERSION = '9'
+
 
 def generate_pkginfo(data):
     pkginfo = ''
@@ -101,17 +103,21 @@ def generate_localdb(tmpdir_factory):
     Parameters:
     pkgs (list): a list of dicts containing
     dbroot (string): the path to the root (normally /var/lib/pacman)
+    alpm_db_version (string): the ALPM_DB_VERSION (default 9)
 
     Returns:
     str: path to dbroot for when dbroot is not provided
     '''
 
-    def _generate_localdb(pkgs, dbroot=''):
+    def _generate_localdb(pkgs, dbroot='', alpm_db_version=ALPM_DB_VERSION):
         if not dbroot:
             dbroot = str(tmpdir_factory.mktemp('dbpath'))
 
         dbloc = f"{dbroot}/local"
         os.mkdir(dbloc)
+
+        with open(f"{dbloc}/ALPM_DB_VERSION", 'w') as fp:
+            fp.write(ALPM_DB_VERSION)
 
         for pkg in pkgs:
             path = f"{dbloc}/{pkg['name']}-{pkg['version']}"
