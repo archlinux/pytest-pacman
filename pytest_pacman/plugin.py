@@ -124,7 +124,7 @@ def generate_localdb(tmpdir_factory):
             os.makedirs(path)
 
             with open(f'{path}/desc', 'w') as f:
-                f.write(generate_desc(pkg))
+                f.write(_generate_desc(pkg))
 
             if 'backup' in pkg or 'files' in pkg:
                 with open(f'{path}/files', 'w') as f:
