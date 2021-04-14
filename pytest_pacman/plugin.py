@@ -9,7 +9,7 @@ import pytest
 ALPM_DB_VERSION = '9'
 
 
-def generate_pkginfo(data):
+def _generate_pkginfo(data):
     pkginfo = ''
 
     for key, value in data.items():
@@ -22,7 +22,7 @@ def generate_pkginfo(data):
     return pkginfo
 
 
-def generate_desc(pkg):
+def _generate_desc(pkg):
     '''
     '''
 
@@ -47,7 +47,7 @@ def generate_desc(pkg):
     return desc
 
 
-def generate_files(pkg):
+def _generate_files(pkg):
     files = ""
 
     if 'files' in pkg:
@@ -87,7 +87,7 @@ def generate_syncdb(tmpdir_factory):
         tar = tarfile.open(dbloc, "w")
         for pkg in pkgs:
             info = tarfile.TarInfo(f"{pkg['name']}-{pkg['version']}/desc")
-            data = generate_desc(pkg)
+            data = _generate_desc(pkg)
             info.size = len(data)
             tar.addfile(info, io.BytesIO(data.encode()))
 
@@ -128,7 +128,7 @@ def generate_localdb(tmpdir_factory):
 
             if 'backup' in pkg or 'files' in pkg:
                 with open(f'{path}/files', 'w') as f:
-                    f.write(generate_files(pkg))
+                    f.write(_generate_files(pkg))
 
         return dbroot
 
@@ -156,7 +156,7 @@ def generate_package(tmpdir_factory):
 
         tar = tarfile.open(pkgpath, 'w')
         info = tarfile.TarInfo('.PKGINFO')
-        data = generate_pkginfo(data)
+        data = _generate_pkginfo(data)
         info.size = len(data)
         tar.addfile(info, io.BytesIO(data.encode()))
 
