@@ -50,6 +50,12 @@ def package(pkg_data, generate_package):
     return generate_package(pkg_data)
 
 
+@pytest.fixture
+def package_tmpdir(tmpdir_factory, pkg_data, generate_package):
+    pkgpath = str(tmpdir_factory.mktemp('pkg'))
+    return generate_package(pkg_data, pkgpath=pkgpath)
+
+
 def test_localdb(core_data, localdb):
     pkg = core_data[0]
     pkgpath = f"{localdb}/local/{pkg['name']}-{pkg['version']}"
@@ -90,5 +96,11 @@ def test_syncdb_tmpdir(core_data, syncdb_tmpdir):
 
 def test_package(pkg_data, package):
     with tarfile.open(package) as tar:
+        for index, tarinfo in enumerate(tar):
+            assert tarinfo.name == '.PKGINFO'
+
+
+def test_package_tmpdir(pkg_data, package_tmpdir):
+    with tarfile.open(package_tmpdir) as tar:
         for index, tarinfo in enumerate(tar):
             assert tarinfo.name == '.PKGINFO'
