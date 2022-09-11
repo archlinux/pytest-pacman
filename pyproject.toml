@@ -1,0 +1,48 @@
+[project]
+name = "pytest-pacman"
+version = "0.1"
+description = "py.test plugin to generate pacman db fixtures"
+readme = "README.md"
+license = {file = "LICENSE"}
+keywords = ["pytest", "pacman"]
+maintainers = [
+  {name = "Jelle van der Waa"},
+  {email = "jelle@archlinux.org"}
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Console",
+  "Environment :: Plugins",
+  "Intended Audience :: Developers",
+  "License :: DFSG approved",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.6",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Topic :: Software Development :: Testing",
+]
+dependencies = [
+  "pytest>=3.7.0"
+]
+
+[project.optional-dependencies]
+tests = [
+  'pytest',
+  'pytest-cov',
+]
+
+[project.urls]
+repository = "http://github.com/archlinux/pytest-pacman"
+
+[project.entry-points."pytest11"]
+pacman = "pytest_pacman.plugin"
+
+[build-system]
+requires = [
+    "setuptools >= 61",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
