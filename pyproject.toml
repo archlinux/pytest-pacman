@@ -17,13 +17,9 @@ classifiers = [
   "License :: DFSG approved",
   "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
-  "Programming Language :: Python",
-  "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.6",
-  "Programming Language :: Python :: 3.7",
-  "Programming Language :: Python :: 3.8",
   "Topic :: Software Development :: Testing",
 ]
+requires-python = ">=3.5"
 dependencies = [
   "pytest>=3.7.0"
 ]
@@ -41,11 +37,8 @@ repository = "http://github.com/archlinux/pytest-pacman"
 pacman = "pytest_pacman.plugin"
 
 [build-system]
-requires = [
-    "setuptools >= 61",
-    "wheel",
-]
-build-backend = "setuptools.build_meta"
+requires = ["flit_core"]
+build-backend = "flit_core.buildapi"
 
 [tool.ruff]
 line-length = 120
