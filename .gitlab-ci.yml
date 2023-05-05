@@ -5,7 +5,7 @@ variables:
 
 before_script:
   - pacman -Syu --noconfirm --noprogressbar --needed
-           python-pytest python-pytest-cov flake8 make
+           python-pytest python-pytest-cov ruff make
 
 
 test:

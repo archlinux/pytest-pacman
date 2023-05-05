@@ -1,5 +1,5 @@
 PYTHON?=python
-FLAKE8?=flake8
+RUFF?=ruff
 PYTEST?=py.test
 PYTEST_OPTIONS+=-s -p no:pacman
 PYTEST_INPUT?=test
@@ -12,4 +12,4 @@ test:
 	PYTHONPATH=. ${PYTEST} ${PYTEST_INPUT} ${PYTEST_OPTIONS} ${PYTEST_COVERAGE_OPTIONS}
 
 lint:
-	$(FLAKE8) pytest_pacman
+	$(RUFF) pytest_pacman
