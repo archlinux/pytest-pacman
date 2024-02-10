@@ -46,3 +46,10 @@ exclude = [
   ".git",
   "doc",
 ]
+
+[tool.ruff.lint]
+select = [
+  "E",       # pycodestyle
+  "F",       # pyflakes
+  "RUF",     # ruff rules
+]
