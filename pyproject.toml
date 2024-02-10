@@ -49,6 +49,7 @@ exclude = [
 
 [tool.ruff.lint]
 select = [
+  "A",       # flake8-builtins
   "E",       # pycodestyle
   "F",       # pyflakes
   "RUF",     # ruff rules
