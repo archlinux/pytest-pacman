@@ -1,4 +1,4 @@
-image: "archlinux:latest"
+image: archlinux:latest
 
 variables:
   PYTHONPATH: "."
