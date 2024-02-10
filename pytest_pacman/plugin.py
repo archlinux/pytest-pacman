@@ -4,7 +4,10 @@ import io
 import os
 import tarfile
 
+import libarchive
 import pytest
+
+from libarchive.entry import FileType
 
 ALPM_DB_VERSION = '9'
 
@@ -154,11 +157,18 @@ def generate_package(tmpdir_factory):
         else:
             pkgpath = os.path.join(pkgpath, pkgname)
 
-        tar = tarfile.open(pkgpath, 'w')
-        info = tarfile.TarInfo('.PKGINFO')
-        data = _generate_pkginfo(data)
-        info.size = len(data)
-        tar.addfile(info, io.BytesIO(data.encode()))
+        with libarchive.file_writer(pkgpath, 'ustar') as archive:
+            pkginfo = _generate_pkginfo(data)
+            pkginfo = pkginfo.encode()
+            archive.add_file_from_memory('.PKGINFO', len(pkginfo), pkginfo)
+
+            for name, entry in data.get('files', {}).items(): 
+                if entry['type'] == 'dir':
+                    archive.add_file_from_memory(name, 0, b'', filetype=FileType.DIRECTORY)
+                elif entry['type'] == 'reg':
+                    content = entry['content'].encode()
+                    archive.add_file_from_memory(name, len(content), content)
+                # TODO: support creating a symbolic link
 
         return pkgpath
 

@@ -21,7 +21,8 @@ classifiers = [
 ]
 requires-python = ">=3.5"
 dependencies = [
-  "pytest>=3.7.0"
+  "pytest>=3.7.0",
+  "libarchive-c"
 ]
 
 [project.optional-dependencies]

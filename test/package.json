@@ -11,5 +11,9 @@
     "depend": [
         "iana-etc",
         "vi"
-    ]
+    ],
+    "files": {
+        "etc/machine-id": { "type": "reg", "content": "1234" },
+        "usr": { "type": "dir", "uid": 0, "gid": 0 }
+    }
 }

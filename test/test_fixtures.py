@@ -96,11 +96,15 @@ def test_syncdb_tmpdir(core_data, syncdb_tmpdir):
 
 def test_package(pkg_data, package):
     with tarfile.open(package) as tar:
-        for index, tarinfo in enumerate(tar):
-            assert tarinfo.name == '.PKGINFO'
+        files = tar.getnames()
+        assert '.PKGINFO' in files
+        for f in pkg_data.get('files', {}).keys():
+            assert f in files
 
 
 def test_package_tmpdir(pkg_data, package_tmpdir):
     with tarfile.open(package_tmpdir) as tar:
-        for index, tarinfo in enumerate(tar):
-            assert tarinfo.name == '.PKGINFO'
+        files = tar.getnames()
+        assert '.PKGINFO' in files
+        for f in pkg_data.get('files', {}).keys():
+            assert f in files

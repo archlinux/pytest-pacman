@@ -6,6 +6,7 @@ variables:
 before_script:
   - pacman -Syu --noconfirm --noprogressbar --needed
            python-pytest python-pytest-cov ruff make
+           python-libarchive-c
 
 
 test:
