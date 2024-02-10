@@ -17,23 +17,23 @@ def core_data():
     return json.load(open(f'{curpath}/core.json'))
 
 
-@pytest.fixture
+@pytest.fixture()
 def localdb(core_data, generate_localdb):
     return generate_localdb(core_data)
 
 
-@pytest.fixture
+@pytest.fixture()
 def localdb_tmpdir(tmpdir_factory, core_data, generate_localdb):
     dbpath = str(tmpdir_factory.mktemp('dbpath'))
     return generate_localdb(core_data, dbpath)
 
 
-@pytest.fixture
+@pytest.fixture()
 def syncdb(core_data, generate_syncdb):
     return generate_syncdb(core_data)
 
 
-@pytest.fixture
+@pytest.fixture()
 def syncdb_tmpdir(tmpdir_factory, core_data, generate_syncdb):
     dbpath = str(tmpdir_factory.mktemp('dbpath'))
     return generate_syncdb(core_data, 'foo.db', dbpath)
@@ -45,12 +45,12 @@ def pkg_data():
     return json.load(open(f'{curpath}/package.json'))
 
 
-@pytest.fixture
+@pytest.fixture()
 def package(pkg_data, generate_package):
     return generate_package(pkg_data)
 
 
-@pytest.fixture
+@pytest.fixture()
 def package_tmpdir(tmpdir_factory, pkg_data, generate_package):
     pkgpath = str(tmpdir_factory.mktemp('pkg'))
     return generate_package(pkg_data, pkgpath=pkgpath)
