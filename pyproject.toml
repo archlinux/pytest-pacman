@@ -42,3 +42,7 @@ build-backend = "flit_core.buildapi"
 
 [tool.ruff]
 line-length = 120
+exclude = [
+  ".git",
+  "doc",
+]
