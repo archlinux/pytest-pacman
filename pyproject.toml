@@ -57,3 +57,16 @@ select = [
   "RUF",     # ruff rules
   "PT",      # flake8-pytest-style
 ]
+
+[tool.pytest.ini_options]
+addopts = "-p no:pacman"
+pythonpath = "."
+testpaths = [
+  "test",
+]
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.html]
+directory = "test/coverage"

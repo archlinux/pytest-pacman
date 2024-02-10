@@ -1,18 +1,42 @@
 image: archlinux:latest
 
-variables:
-  PYTHONPATH: "."
+stages:
+  - lint
+  - test
 
-before_script:
-  - pacman -Syu --noconfirm --noprogressbar --needed
-           python-pytest python-pytest-cov ruff make
-
-
-test:
+ruff:
+  stage: lint
+  needs: []
+  only:
+    - merge_requests
+  before_script:
+    - pacman -Syu --needed --noconfirm ruff
   script:
-    - make lint
-    - make test
+    - ruff check -q .
+
+ruff-format:
+  stage: lint
+  needs: []
+  only:
+    - merge_requests
+  before_script:
+    - pacman -Syu --needed --noconfirm ruff
+  script:
+    - ruff format --check -q .
+
+pytest:
+  stage: test
+  needs: []
+  only:
+    - branches
+    - merge_requests
+  before_script:
+    - pacman -Syu --noconfirm --noprogressbar --needed python-pytest python-pytest-cov
+  script:
+    - coverage run -m pytest
+    - coverage report
     - coverage xml
+  coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
   artifacts:
     reports:
       coverage_report:

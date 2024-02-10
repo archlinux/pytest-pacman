@@ -14,7 +14,7 @@ pytest_plugins = "pytest_pacman.plugin"
 @pytest.fixture(scope="session")
 def core_data():
     curpath = os.path.dirname(os.path.realpath(__file__))
-    return json.load(open(f'{curpath}/core.json'))
+    return json.load(open(f"{curpath}/core.json"))
 
 
 @pytest.fixture()
@@ -24,7 +24,7 @@ def localdb(core_data, generate_localdb):
 
 @pytest.fixture()
 def localdb_tmpdir(tmpdir_factory, core_data, generate_localdb):
-    dbpath = str(tmpdir_factory.mktemp('dbpath'))
+    dbpath = str(tmpdir_factory.mktemp("dbpath"))
     return generate_localdb(core_data, dbpath)
 
 
@@ -35,14 +35,14 @@ def syncdb(core_data, generate_syncdb):
 
 @pytest.fixture()
 def syncdb_tmpdir(tmpdir_factory, core_data, generate_syncdb):
-    dbpath = str(tmpdir_factory.mktemp('dbpath'))
-    return generate_syncdb(core_data, 'foo.db', dbpath)
+    dbpath = str(tmpdir_factory.mktemp("dbpath"))
+    return generate_syncdb(core_data, "foo.db", dbpath)
 
 
 @pytest.fixture(scope="session")
 def pkg_data():
     curpath = os.path.dirname(os.path.realpath(__file__))
-    return json.load(open(f'{curpath}/package.json'))
+    return json.load(open(f"{curpath}/package.json"))
 
 
 @pytest.fixture()
@@ -52,7 +52,7 @@ def package(pkg_data, generate_package):
 
 @pytest.fixture()
 def package_tmpdir(tmpdir_factory, pkg_data, generate_package):
-    pkgpath = str(tmpdir_factory.mktemp('pkg'))
+    pkgpath = str(tmpdir_factory.mktemp("pkg"))
     return generate_package(pkg_data, pkgpath=pkgpath)
 
 
@@ -97,10 +97,10 @@ def test_syncdb_tmpdir(core_data, syncdb_tmpdir):
 def test_package(pkg_data, package):
     with tarfile.open(package) as tar:
         for _, tarinfo in enumerate(tar):
-            assert tarinfo.name == '.PKGINFO'
+            assert tarinfo.name == ".PKGINFO"
 
 
 def test_package_tmpdir(pkg_data, package_tmpdir):
     with tarfile.open(package_tmpdir) as tar:
         for _, tarinfo in enumerate(tar):
-            assert tarinfo.name == '.PKGINFO'
+            assert tarinfo.name == ".PKGINFO"

@@ -6,31 +6,30 @@ import tarfile
 
 import pytest
 
-ALPM_DB_VERSION = '9'
+ALPM_DB_VERSION = "9"
 
 
 def _generate_pkginfo(data):
-    pkginfo = ''
+    pkginfo = ""
 
     for key, value in data.items():
         if not isinstance(value, list):
             value = [value]
 
         for val in value:
-            pkginfo += f'{key} = {val}\n'
+            pkginfo += f"{key} = {val}\n"
 
     return pkginfo
 
 
 def _generate_desc(pkg):
-    '''
-    '''
+    """ """
 
     desc = ""
 
     for key, value in pkg.items():
         # Ignore files specific keys
-        if key in ['backup', 'files']:
+        if key in ["backup", "files"]:
             continue
 
         if not isinstance(value, list):
@@ -50,16 +49,16 @@ def _generate_desc(pkg):
 def _generate_files(pkg):
     files = ""
 
-    if 'files' in pkg:
+    if "files" in pkg:
         files += "%FILES%\n"
-        for entry in pkg['files']:
-            files += f'{entry}\n'
+        for entry in pkg["files"]:
+            files += f"{entry}\n"
 
-    if 'backup' in pkg:
-        files += '\n'
+    if "backup" in pkg:
+        files += "\n"
         files += "%BACKUP%\n"
-        for entry in pkg['backup']:
-            files += f'{entry}\n'
+        for entry in pkg["backup"]:
+            files += f"{entry}\n"
 
     return files
 
@@ -67,7 +66,7 @@ def _generate_files(pkg):
 # TODO: generate files db
 @pytest.fixture(scope="session")
 def generate_syncdb(tmpdir_factory):
-    '''Generates a sync database in a provided location or when not provided pytest tmpdir
+    """Generates a sync database in a provided location or when not provided pytest tmpdir
 
     Parameters:
     pkgs (list): a list of dicts containing
@@ -76,11 +75,11 @@ def generate_syncdb(tmpdir_factory):
 
     Returns:
     str: path to dbroot for when dbroot is not provided
-    '''
+    """
 
-    def _generate_syncdb(pkgs, dbname='test.db', dbloc=''):
+    def _generate_syncdb(pkgs, dbname="test.db", dbloc=""):
         if not dbloc:
-            dbloc = str(tmpdir_factory.mktemp('dbpath').join(dbname))
+            dbloc = str(tmpdir_factory.mktemp("dbpath").join(dbname))
         else:
             dbloc = os.path.join(dbloc, dbname)
 
@@ -98,7 +97,7 @@ def generate_syncdb(tmpdir_factory):
 
 @pytest.fixture(scope="session")
 def generate_localdb(tmpdir_factory):
-    '''Generates a localdb in provided location or when not provided pytest tmpdir
+    """Generates a localdb in provided location or when not provided pytest tmpdir
 
     Parameters:
     pkgs (list): a list of dicts containing
@@ -107,27 +106,27 @@ def generate_localdb(tmpdir_factory):
 
     Returns:
     str: path to dbroot for when dbroot is not provided
-    '''
+    """
 
-    def _generate_localdb(pkgs, dbroot='', alpm_db_version=ALPM_DB_VERSION):
+    def _generate_localdb(pkgs, dbroot="", alpm_db_version=ALPM_DB_VERSION):
         if not dbroot:
-            dbroot = str(tmpdir_factory.mktemp('dbpath'))
+            dbroot = str(tmpdir_factory.mktemp("dbpath"))
 
         dbloc = f"{dbroot}/local"
         os.mkdir(dbloc)
 
-        with open(f"{dbloc}/ALPM_DB_VERSION", 'w') as fp:
+        with open(f"{dbloc}/ALPM_DB_VERSION", "w") as fp:
             fp.write(ALPM_DB_VERSION)
 
         for pkg in pkgs:
             path = f"{dbloc}/{pkg['name']}-{pkg['version']}"
             os.makedirs(path)
 
-            with open(f'{path}/desc', 'w') as f:
+            with open(f"{path}/desc", "w") as f:
                 f.write(_generate_desc(pkg))
 
-            if 'backup' in pkg or 'files' in pkg:
-                with open(f'{path}/files', 'w') as f:
+            if "backup" in pkg or "files" in pkg:
+                with open(f"{path}/files", "w") as f:
                     f.write(_generate_files(pkg))
 
         return dbroot
@@ -137,7 +136,7 @@ def generate_localdb(tmpdir_factory):
 
 @pytest.fixture(scope="session")
 def generate_package(tmpdir_factory):
-    '''Generates a package in provided location or when not provided pytest tmpdir
+    """Generates a package in provided location or when not provided pytest tmpdir
 
     Parameters:
     data (object): a dict containing the fields for PKGINFO
@@ -146,16 +145,16 @@ def generate_package(tmpdir_factory):
 
     Returns:
     str: path to package
-    '''
+    """
 
-    def _generate_package(data, pkgname='test.pkg.tar', pkgpath=''):
+    def _generate_package(data, pkgname="test.pkg.tar", pkgpath=""):
         if not pkgpath:
-            pkgpath = str(tmpdir_factory.mktemp('pkgpath').join(pkgname))
+            pkgpath = str(tmpdir_factory.mktemp("pkgpath").join(pkgname))
         else:
             pkgpath = os.path.join(pkgpath, pkgname)
 
-        tar = tarfile.open(pkgpath, 'w')
-        info = tarfile.TarInfo('.PKGINFO')
+        tar = tarfile.open(pkgpath, "w")
+        info = tarfile.TarInfo(".PKGINFO")
         data = _generate_pkginfo(data)
         info.size = len(data)
         tar.addfile(info, io.BytesIO(data.encode()))
