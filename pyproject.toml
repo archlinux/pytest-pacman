@@ -54,8 +54,12 @@ select = [
   "C4",      # flake8-comprehensions
   "E",       # pycodestyle
   "F",       # pyflakes
+  "FBT",     # flake8-boolean-trap
   "RUF",     # ruff rules
+  "PIE",     # flake8-pie
+  "PLE",     # pylint errors
   "PT",      # flake8-pytest-style
+  "W",       # warnings (mostly whitespace)
 ]
 
 [tool.pytest.ini_options]
