@@ -116,7 +116,7 @@ def generate_localdb(tmpdir_factory):
         os.mkdir(dbloc)
 
         with open(f"{dbloc}/ALPM_DB_VERSION", "w") as fp:
-            fp.write(ALPM_DB_VERSION)
+            fp.write(alpm_db_version)
 
         for pkg in pkgs:
             path = f"{dbloc}/{pkg['name']}-{pkg['version']}"
