@@ -74,3 +74,9 @@ branch = true
 
 [tool.coverage.html]
 directory = "test/coverage"
+
+[tool.mypy]
+python_version = "3.14"
+exclude = [
+    "doc/",
+]
