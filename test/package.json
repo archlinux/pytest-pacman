@@ -7,6 +7,7 @@
     "builddate": 1599085821,
     "packager": "Test <test@archlinux.org>",
     "arch": "x86_64",
+    "size": 0,
     "license": "GPL",
     "depend": [
         "iana-etc",
