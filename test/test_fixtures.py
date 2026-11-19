@@ -4,55 +4,61 @@ import json
 import tarfile
 import os
 import os.path
+from pathlib import Path
+from typing import Any, TYPE_CHECKING
 
 import pytest
+
+
+if TYPE_CHECKING:
+    from pytest_pacman.plugin import PkgInfo
 
 
 pytest_plugins = "pytest_pacman.plugin"
 
 
 @pytest.fixture(scope="session")
-def core_data():
+def core_data() -> Any:
     curpath = os.path.dirname(os.path.realpath(__file__))
     return json.load(open(f"{curpath}/core.json"))
 
 
 @pytest.fixture
-def localdb(core_data, generate_localdb):
+def localdb(core_data: Any, generate_localdb) -> Path:
     return generate_localdb(core_data)
 
 
 @pytest.fixture
-def localdb_tmpdir(tmpdir_factory, core_data, generate_localdb):
-    dbpath = str(tmpdir_factory.mktemp("dbpath"))
+def localdb_tmpdir(tmp_path_factory, core_data, generate_localdb) -> Path:
+    dbpath = tmp_path_factory.mktemp("dbpath")
     return generate_localdb(core_data, dbpath)
 
 
 @pytest.fixture
-def syncdb(core_data, generate_syncdb):
+def syncdb(core_data, generate_syncdb) -> Path:
     return generate_syncdb(core_data)
 
 
 @pytest.fixture
-def syncdb_tmpdir(tmpdir_factory, core_data, generate_syncdb):
-    dbpath = str(tmpdir_factory.mktemp("dbpath"))
+def syncdb_tmpdir(tmp_path_factory, core_data, generate_syncdb) -> Path:
+    dbpath = tmp_path_factory.mktemp("dbpath")
     return generate_syncdb(core_data, "foo.db", dbpath)
 
 
 @pytest.fixture(scope="session")
-def pkg_data():
+def pkg_data() -> PkgInfo:
     curpath = os.path.dirname(os.path.realpath(__file__))
     return json.load(open(f"{curpath}/package.json"))
 
 
 @pytest.fixture
-def package(pkg_data, generate_package):
+def package(pkg_data: PkgInfo, generate_package) -> Path:
     return generate_package(pkg_data)
 
 
 @pytest.fixture
-def package_tmpdir(tmpdir_factory, pkg_data, generate_package):
-    pkgpath = str(tmpdir_factory.mktemp("pkg"))
+def package_tmpdir(tmp_path_factory: pytest.TempPathFactory, pkg_data: PkgInfo, generate_package):
+    pkgpath = tmp_path_factory.mktemp("pkg")
     return generate_package(pkg_data, pkgpath=pkgpath)
 
 
