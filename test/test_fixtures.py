@@ -59,8 +59,19 @@ def syncdb_tmpdir(
 
 @pytest.fixture(scope="session")
 def pkg_data() -> PkgInfo:
-    curpath = os.path.dirname(os.path.realpath(__file__))
-    return cast(PkgInfo, json.load(open(f"{curpath}/package.json")))
+    return {
+        "pkgname": "filesystem",
+        "pkgbase": "filesystem",
+        "pkgver": "1-1",
+        "pkgdesc": "filesystem",
+        "url": "https://archlinux.org",
+        "builddate": 1599085821,
+        "packager": "Test <test@archlinux.org>",
+        "arch": "x86_64",
+        "size": 0,
+        "license": ["GPL"],
+        "depend": ["iana-etc", "vi"],
+    }
 
 
 @pytest.fixture
