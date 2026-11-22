@@ -139,7 +139,7 @@ def _generate_desc(pkg: PackageDesc) -> str:
         for val in value:
             desc += f"{val}\n"
 
-    desc += "\n"
+        desc += "\n"
 
     return desc
 

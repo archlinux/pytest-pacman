@@ -174,6 +174,26 @@ def test_localdb(core_data: list[PackageDesc], localdb: Path) -> None:
     assert os.path.exists(f"{pkgpath}/desc")
 
 
+def test_localdb_desc(core_data: list[PackageDesc], localdb: Path) -> None:
+    pkg = core_data[1]
+    with open(f"{localdb}/local/{pkg['name']}-{pkg['version']}/desc") as fp:
+        desc = fp.read()
+
+    assert desc == (
+        "%NAME%\ngit\n\n"
+        "%BASE%\ngit\n\n"
+        "%VERSION%\n2.25.0-1\n\n"
+        "%DESC%\nthe fast distributed version control system\n\n"
+        "%URL%\nhttps://git-scm.com/\n\n"
+        "%LICENSE%\nGPL2\n\n"
+        "%ARCH%\nx86_64\n\n"
+        "%BUILDDATE%\n1573556456\n\n"
+        "%PACKAGER%\nArch Git <archdev@archlinux.org>\n\n"
+        "%CSIZE%\n2483776\n\n"
+        "%GROUPS%\nbase-devel\n\n"
+    )
+
+
 def test_localdb_tmpdir(core_data: list[PackageDesc], localdb_tmpdir: Path) -> None:
     pkg = core_data[0]
     pkgpath = f"{localdb_tmpdir}/local/{pkg['name']}-{pkg['version']}"
