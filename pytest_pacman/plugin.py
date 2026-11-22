@@ -165,9 +165,9 @@ def generate_syncdb(tmp_path_factory: pytest.TempPathFactory) -> GenerateSyncDb:
         tar = tarfile.open(dbloc, "w")
         for pkg in pkgs:
             info = tarfile.TarInfo(f"{pkg['name']}-{pkg['version']}/desc")
-            data = _generate_desc(pkg)
+            data = _generate_desc(pkg).encode()
             info.size = len(data)
-            tar.addfile(info, io.BytesIO(data.encode()))
+            tar.addfile(info, io.BytesIO(data))
 
         return dbloc
 
@@ -237,8 +237,9 @@ def generate_package(tmp_path_factory: pytest.TempPathFactory) -> GeneratePackag
         tar = tarfile.open(pkgpath, "w")
         info = tarfile.TarInfo(".PKGINFO")
         pkginfo = _generate_pkginfo(data)
-        info.size = len(data)
-        tar.addfile(info, io.BytesIO(pkginfo.encode()))
+        pkginfo_bytes = pkginfo.encode()
+        info.size = len(pkginfo_bytes)
+        tar.addfile(info, io.BytesIO(pkginfo_bytes))
 
         return pkgpath
 
