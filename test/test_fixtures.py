@@ -2,12 +2,11 @@
 
 import gzip
 import hashlib
-import json
 import tarfile
 import os
 import os.path
 from pathlib import Path
-from typing import Literal, cast
+from typing import Literal
 
 import pytest
 
@@ -27,8 +26,54 @@ PKG_FILES: dict[str, PkgFile] = {
 
 @pytest.fixture(scope="session")
 def core_data() -> list[PackageDesc]:
-    curpath = os.path.dirname(os.path.realpath(__file__))
-    return cast(list[PackageDesc], json.load(open(f"{curpath}/core.json")))
+    return [
+        {
+            "name": "linux",
+            "base": "linux",
+            "version": "5.5.3.arch1-1",
+            "desc": "The linux kernel and modules",
+            "url": "https://kernel.org",
+            "license": ["GPL2"],
+            "arch": "x86_64",
+            "builddate": 1573556456,
+            "packager": "Arch Dev <developer@archlinux.org>",
+            "csize": 2483776,
+            "depends": ["coreutils"],
+            "makedepends": ["bc"],
+            "optdepends": ["linux-firmware"],
+        },
+        {
+            "name": "git",
+            "base": "git",
+            "version": "2.25.0-1",
+            "desc": "the fast distributed version control system",
+            "url": "https://git-scm.com/",
+            "license": ["GPL2"],
+            "arch": "x86_64",
+            "builddate": 1573556456,
+            "packager": "Arch Git <archdev@archlinux.org>",
+            "csize": 2483776,
+            "groups": ["base-devel"],
+        },
+        {
+            "name": "pacman",
+            "base": "pacman",
+            "version": "5.0-1",
+            "desc": "A library-based package manager with dependency support",
+            "url": "https://archlinux.org/pacman",
+            "license": ["GPL"],
+            "arch": "x86_64",
+            "builddate": 1573556451,
+            "packager": "Arch Dev <developer@archlinux.org>",
+            "depends": ["bash", "glibc", "libarchive"],
+            "groups": ["base-devel"],
+            "backup": [
+                "etc/pacman.conf\t9dd54ec11513b2838bffb04dab66c50a",
+                "etc/makepkg.conf\tf613f9ecbfcafdaed423848ba7190b61",
+            ],
+            "files": ["etc/", "etc/pacman.conf", "var/", "var/lib/", "var/lib/pacman"],
+        },
+    ]
 
 
 @pytest.fixture
