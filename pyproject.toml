@@ -1,6 +1,6 @@
 [project]
 name = "pytest-pacman"
-version = "0.2.0"
+version = "0.2.1"
 description = "py.test plugin to generate pacman db fixtures"
 readme = "README.md"
 license = {file = "LICENSE"}
