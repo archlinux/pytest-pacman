@@ -120,7 +120,9 @@ def _generate_desc(pkg: PackageDesc) -> str:
         desc += f"%{key.upper()}%\n"
 
         for val in value:
-            desc += f"{val}\n\n"
+            desc += f"{val}\n"
+
+    desc += "\n"
 
     return desc
 
