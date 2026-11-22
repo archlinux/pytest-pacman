@@ -189,9 +189,16 @@ def test_localdb_desc(core_data: list[PackageDesc], localdb: Path) -> None:
         "%ARCH%\nx86_64\n\n"
         "%BUILDDATE%\n1573556456\n\n"
         "%PACKAGER%\nArch Git <archdev@archlinux.org>\n\n"
-        "%CSIZE%\n2483776\n\n"
         "%GROUPS%\nbase-devel\n\n"
     )
+
+
+def test_syncdb_desc_csize(core_data: list[PackageDesc], syncdb: Path) -> None:
+    pkg = core_data[1]
+    with tarfile.open(syncdb) as tar:
+        desc = _read(tar, f"{pkg['name']}-{pkg['version']}/desc").decode()
+
+    assert "%CSIZE%\n2483776\n\n" in desc
 
 
 def test_localdb_tmpdir(core_data: list[PackageDesc], localdb_tmpdir: Path) -> None:

@@ -118,14 +118,17 @@ def _generate_pkginfo(data: PkgInfo) -> str:
     return pkginfo
 
 
-def _generate_desc(pkg: PackageDesc) -> str:
+_FILES_KEYS = {"backup", "files"}
+_SYNC_ONLY_KEYS = {"filename", "csize", "isize", "sha256sum", "md5sum", "pgpsig"}
+
+
+def _generate_desc(pkg: PackageDesc, exclude: set[str] = _FILES_KEYS) -> str:
     """ """
 
     desc = ""
 
     for key, value in pkg.items():
-        # Ignore files specific keys
-        if key in ["backup", "files"]:
+        if key in exclude:
             continue
 
         if not isinstance(value, list):
@@ -297,7 +300,7 @@ def generate_localdb(tmp_path_factory: pytest.TempPathFactory) -> GenerateLocalD
             os.makedirs(path)
 
             with open(f"{path}/desc", "w") as f:
-                f.write(_generate_desc(pkg))
+                f.write(_generate_desc(pkg, _FILES_KEYS | _SYNC_ONLY_KEYS))
 
             if "backup" in pkg or "files" in pkg:
                 with open(f"{path}/files", "w") as f:
